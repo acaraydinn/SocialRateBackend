@@ -33,19 +33,34 @@ SMS_API_KEY = env('SMS_API_KEY')
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env.bool('DEBUG', default=False)
 
-EMAIL_HOST = 'nano.promail.com.tr'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'info@socialrate.net'
-EMAIL_HOST_PASSWORD = 'Fevzi.12345'
+# Email configuration - credentials from environment
+EMAIL_HOST = env('EMAIL_HOST', default='nano.promail.com.tr')
+EMAIL_PORT = env.int('EMAIL_PORT', default=465)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
+    'api.socialrate.net',
+    'socialrate.net',
+    'localhost',
+    '127.0.0.1',
+    # Legacy IPs - remove if no longer needed
+    '77.92.144.39',
+    '185.87.253.121',
+])
 
+# CSRF trusted origins for POST requests from frontend
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[
+    'https://api.socialrate.net',
+    'https://socialrate.net',
+    'https://www.socialrate.net',
+])
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['77.92.144.39', '185.87.253.121','socialrate.net','localhost','ubasoft.net',"127.0.0.1"])
 MAX_OTP_TRY = 3
 
 # Application definition
@@ -114,7 +129,6 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'middleware.otprestrict.RestrictOTPEndpointMiddleware',
     'middleware.iprestrict.BlockExactApiPathMiddleware',
@@ -125,10 +139,10 @@ ROOT_URLCONF = 'SocialApp.urls'
 
 
 CSP_INCLUDE_NONCE_IN = ['script-src']
-CSP_CONNECT_SRC = ("'self'", "https://socialrate.net", "https://ubasoft.net")  # Allow both frontend and backend
+CSP_CONNECT_SRC = ("'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net")
 CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")  # Allow font loading
-CSP_SCRIPT_SRC = ("'self'", "https://ubasoft.net", "https://socialrate.net")  # Allow frontend and backend scripts
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
+CSP_SCRIPT_SRC = ("'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net")
 
 
 
@@ -225,9 +239,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ALLOWED_ORIGINS = [
-   "http://localhost:4200",
-   "https://ubasoft.net",
-   "http://ubasoft.net"
+    "https://socialrate.net",
+    "https://www.socialrate.net",
+    "https://api.socialrate.net",
+    "http://localhost:4200",  # Local development
 ]
 
 CORS_ALLOW_HEADERS = [

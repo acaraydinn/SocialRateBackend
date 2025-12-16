@@ -5,7 +5,7 @@ FROM python:3.10-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set work directory
+# Set work directory (must be Django project root where manage.py is)
 WORKDIR /app
 
 # Install system dependencies
@@ -23,12 +23,14 @@ RUN pip install gunicorn
 # Copy project
 COPY . /app/
 
-# Collect static files (optional step, can be done in entrypoint or CI)
-# RUN python SocialApp/manage.py collectstatic --noinput
+# Change to Django project directory
+WORKDIR /app/SocialApp
+
+# Collect static files
+RUN python manage.py collectstatic --noinput --clear || true
 
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn
-# Adjust the path to your wsgi file.
-CMD ["gunicorn", "SocialApp.SocialApp.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Run gunicorn from Django project root
+CMD ["gunicorn", "SocialApp.wsgi:application", "--bind", "0.0.0.0:8000"]

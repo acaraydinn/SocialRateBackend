@@ -28,5 +28,8 @@ jobs:
             docker compose down
             docker compose up -d --build
             
-            # Optional: Run migrations
-            # docker compose exec -T web python SocialApp/manage.py migrate
+            # Run migrations
+            docker compose exec -T web python manage.py migrate --noinput
+            
+            # Collect static files (in case not done in Dockerfile)
+            docker compose exec -T web python manage.py collectstatic --noinput

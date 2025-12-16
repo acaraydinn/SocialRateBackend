@@ -3,16 +3,17 @@ version: '3.8'
 services:
   web:
     build: .
-    command: gunicorn SocialApp.SocialApp.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn SocialApp.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - static_volume:/app/SocialApp/staticfiles
+      - media_volume:/app/SocialApp/media
     expose:
       - 8000
     env_file:
       - .env
     depends_on:
       - db
+    restart: always
     networks:
       - social_network
 
@@ -33,6 +34,7 @@ volumes:
   postgres_data:
   static_volume:
   media_volume:
+
 
 networks:
   social_network:
