@@ -138,10 +138,10 @@ ROOT_URLCONF = 'SocialApp.urls'
 
 
 CSP_INCLUDE_NONCE_IN = ['script-src']
-CSP_CONNECT_SRC = ("'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net")
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
-CSP_SCRIPT_SRC = ("'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net")
+CSP_CONNECT_SRC = ["'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net"]
+CSP_STYLE_SRC = ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"]
+CSP_FONT_SRC = ["'self'", "https://fonts.gstatic.com"]
+CSP_SCRIPT_SRC = ["'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net"]
 
 
 
