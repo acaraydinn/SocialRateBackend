@@ -15,7 +15,6 @@ from pathlib import Path
 import os
 import environ
 from datetime import timedelta
-from decouple import config
 
 env = environ.Env()
 
