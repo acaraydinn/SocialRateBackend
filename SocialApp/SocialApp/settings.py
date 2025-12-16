@@ -15,6 +15,7 @@ from pathlib import Path
 import os
 import environ
 import csp
+from csp.constants import NONCE
 from datetime import timedelta
 
 env = environ.Env()
@@ -156,7 +157,7 @@ CONTENT_SECURITY_POLICY = {
             "https://api.socialrate.net",
             "https://socialrate.net",
             "https://www.socialrate.net",
-            csp.constants.NONCE
+            NONCE
         ],
         'style-src': [
             "'self'",
