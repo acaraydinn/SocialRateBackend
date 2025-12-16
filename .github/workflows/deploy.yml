@@ -1,0 +1,32 @@
+name: Deploy to aaPanel
+
+on:
+  push:
+    branches: [ "master", "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }} # Optional: if key has passphrase
+          port: ${{ secrets.PORT }} # Optional: default 22
+          script: |
+            # Navigate to project directory (update this path)
+            cd /www/wwwroot/socialrate-backend
+            
+            # Pull latest changes
+            git pull origin master
+            
+            # Rebuild and restart containers
+            # This ensures DB is not destroyed (volumes persist)
+            docker compose down
+            docker compose up -d --build
+            
+            # Optional: Run migrations
+            # docker compose exec -T web python SocialApp/manage.py migrate

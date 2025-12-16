@@ -45,7 +45,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 
-ALLOWED_HOSTS = ['185.87.253.121','socialrate.net','localhost','ubasoft.net',"127.0.0.1"]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['77.92.144.39', '185.87.253.121','socialrate.net','localhost','ubasoft.net',"127.0.0.1"])
 MAX_OTP_TRY = 3
 
 # Application definition
@@ -154,23 +154,24 @@ WSGI_APPLICATION = 'SocialApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'socialrcore',
-	'USER': 'admin',
-	'PASSWORD': env('DB_PASSWORD'),
-	'HOST':'localhost',
-	'PORT':'5432'
+if env.bool('USE_SQLITE', default=False):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env('DB_NAME', default='socialrcore'),
+            'USER': env('DB_USER', default='admin'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'HOST': env('DB_HOST', default='localhost'),
+            'PORT': env('DB_PORT', default='5432'),
+        }
+    }
 
 
 # Password validation
