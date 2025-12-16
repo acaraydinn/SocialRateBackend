@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+import csp
 from datetime import timedelta
 
 env = environ.Env()
@@ -137,11 +138,33 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'SocialApp.urls'
 
 
-CSP_INCLUDE_NONCE_IN = ['script-src']
-CSP_CONNECT_SRC = ["'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net"]
-CSP_STYLE_SRC = ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"]
-CSP_FONT_SRC = ["'self'", "https://fonts.gstatic.com"]
-CSP_SCRIPT_SRC = ["'self'", "https://api.socialrate.net", "https://socialrate.net", "https://www.socialrate.net"]
+# Content Security Policy (django-csp 4.0+ format)
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'connect-src': [
+            "'self'",
+            "https://api.socialrate.net",
+            "https://socialrate.net",
+            "https://www.socialrate.net"
+        ],
+        'font-src': [
+            "'self'",
+            "https://fonts.gstatic.com"
+        ],
+        'script-src': [
+            "'self'",
+            "https://api.socialrate.net",
+            "https://socialrate.net",
+            "https://www.socialrate.net",
+            csp.constants.NONCE
+        ],
+        'style-src': [
+            "'self'",
+            "https://fonts.googleapis.com",
+            "'unsafe-inline'"
+        ]
+    }
+}
 
 
 
