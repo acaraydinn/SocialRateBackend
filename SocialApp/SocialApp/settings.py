@@ -37,8 +37,8 @@ DEBUG = env.bool('DEBUG', default=False)
 # Email configuration - credentials from environment
 EMAIL_HOST = env('EMAIL_HOST', default='nano.promail.com.tr')
 EMAIL_PORT = env.int('EMAIL_PORT', default=465)
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
