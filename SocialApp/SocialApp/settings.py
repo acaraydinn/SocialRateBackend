@@ -180,7 +180,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': env('DB_NAME', default='socialrcore'),
             'USER': env('DB_USER', default='admin'),
-            'PASSWORD': env('DB_PASSWORD'),
+            'PASSWORD': env('DB_PASSWORD', default='tHKISfRUO3j3zKPXFotFtf6ifGnyd1mFrzDS8UF6c5x37QTEjQ4bhdyqKZGAhC87'),
             'HOST': env('DB_HOST', default='localhost'),
             'PORT': env('DB_PORT', default='5432'),
         }
