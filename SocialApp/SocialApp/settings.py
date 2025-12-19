@@ -36,14 +36,20 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-# Email configuration - credentials from environment
-EMAIL_HOST = env('EMAIL_HOST', default='nano.promail.com.tr')
-EMAIL_PORT = env.int('EMAIL_PORT', default=465)
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST', default='mail.socialrate.net')
+EMAIL_PORT = env.int('EMAIL_PORT', default=587)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)  # Usually True for port 587
+EMAIL_USE_SSL = False  # SSL is for port 465, TLS is for port 587
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
+
+# Optional: Print emails to console if DEBUG is True (for local testing)
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Force SMTP even in debug to test connection
+    # Or use 'django.core.mail.backends.console.EmailBackend' to just print to terminal without sending.
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
     'api.socialrate.net',
